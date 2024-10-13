@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_task_management_app/screens/home_screen.dart';
 import 'package:flutter_task_management_app/screens/task_screen.dart';
 import 'package:flutter_task_management_app/utils/colors/app_colors.dart';
+import 'package:flutter_task_management_app/widgets/button_widget.dart';
 import 'package:flutter_task_management_app/widgets/task_widget.dart';
 
 class AllTasksScreen extends StatelessWidget {
@@ -108,12 +109,7 @@ class AllTasksScreen extends StatelessWidget {
                     confirmDismiss: (DismissDirection direction) async {
                       return direction == DismissDirection.startToEnd
                           ? Future.delayed(Duration.zero, () {
-                              showModalBottomSheet(
-                                context: context,
-                                builder: (_) {
-                                  return Container();
-                                },
-                              );
+                              editModalWidget(context);
                               return false;
                             })
                           : Future.delayed(const Duration(seconds: 1),
@@ -133,6 +129,47 @@ class AllTasksScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Future<void> editModalWidget(BuildContext context) {
+    return showModalBottomSheet(
+      barrierColor: Colors.transparent,
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (_) {
+        return Container(
+          height: MediaQuery.of(context).size.height / 2.8,
+          decoration: BoxDecoration(
+            color: const Color(0xFf2e3253).withOpacity(0.4),
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ButtonWidget(
+                  text: "View",
+                  textColor: Colors.white,
+                  backgroundColor: AppColors.mainColor,
+                  onTap: () {},
+                ),
+                const SizedBox(height: 10),
+                ButtonWidget(
+                  text: "Edit",
+                  textColor: Colors.white,
+                  backgroundColor: AppColors.mainColor,
+                  onTap: () {},
+                )
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
