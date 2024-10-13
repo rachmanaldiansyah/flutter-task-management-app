@@ -1,0 +1,24 @@
+{
+  "editor.fontFamily": "Fira Code iScript, Fira Code",
+  "editor.fontSize": 14,
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": [
+          "comment",
+          "storage.type.annotation.dart",
+          "keyword.declaration.dart",
+          "storage.type.primitive.dart",
+          "storage.modifier.dart",
+          "keyword.other.import.dart",
+          "support.class.dart",
+          "keyword.control.return.dart",
+          "variable.language.dart"
+        ],
+        "settings": {
+          "fontStyle": "italic bold"
+        }
+      },
+    ],
+  }
+}
