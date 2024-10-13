@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 import 'package:flutter_task_management_app/screens/home_screen.dart';
 import 'package:flutter_task_management_app/screens/task_screen.dart';
 import 'package:flutter_task_management_app/utils/colors/app_colors.dart';
@@ -41,7 +43,7 @@ class AllTasksScreen extends StatelessWidget {
               ),
             ),
             child: IconButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => Get.back(),
               icon: const Icon(
                 Icons.arrow_back,
                 color: AppColors.secondaryColor,

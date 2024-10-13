@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 import 'package:flutter_task_management_app/utils/colors/app_colors.dart';
 import 'package:flutter_task_management_app/widgets/button_widget.dart';
 import 'package:flutter_task_management_app/widgets/textfield_widget.dart';
@@ -30,7 +32,7 @@ class TaskScreen extends StatelessWidget {
               children: [
                 const SizedBox(height: 60),
                 IconButton(
-                  onPressed: () => Navigator.of(context).pop(),
+                  onPressed: () => Get.back(),
                   icon: const Icon(
                     Icons.arrow_back,
                     color: AppColors.secondaryColor,
@@ -54,7 +56,12 @@ class TaskScreen extends StatelessWidget {
                   maxLines: 3,
                 ),
                 const SizedBox(height: 20),
-                ButtonWidget(backgroundColor: AppColors.mainColor, text: "Add Task", textColor: Colors.white, onTap: () {  },),
+                ButtonWidget(
+                  backgroundColor: AppColors.mainColor,
+                  text: "Add Task",
+                  textColor: Colors.white,
+                  onTap: () {},
+                ),
               ],
             ),
             SizedBox(height: MediaQuery.of(context).size.height / 6)

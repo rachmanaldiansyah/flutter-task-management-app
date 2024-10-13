@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 import 'package:flutter_task_management_app/screens/all_task_screen.dart';
 import 'package:flutter_task_management_app/screens/task_screen.dart';
 import 'package:flutter_task_management_app/utils/colors/app_colors.dart';
@@ -47,19 +49,21 @@ class _HomeScreenState extends State<HomeScreen> {
               text: "Add Task",
               textColor: Colors.white,
               backgroundColor: AppColors.mainColor,
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const TaskScreen(),
-              )),
+              onTap: () => Get.to(
+                () => const TaskScreen(),
+                transition: Transition.fade,
+                duration: const Duration(seconds: 1),
+              ),
             ),
             const SizedBox(height: 20),
             ButtonWidget(
               text: "View All",
               textColor: AppColors.mainColor,
               backgroundColor: Colors.white,
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const AllTasksScreen(),
-                ),
+              onTap: () => Get.to(
+                () => const AllTasksScreen(),
+                transition: Transition.fade,
+                duration: const Duration(seconds: 1),
               ),
             )
           ],
