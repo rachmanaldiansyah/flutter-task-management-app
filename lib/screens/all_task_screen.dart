@@ -55,10 +55,10 @@ class AllTasksScreen extends StatelessWidget {
             child: Row(
               children: [
                 IconButton(
-                  onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const HomeScreen(),
-                    ),
+                  onPressed: () => Get.to(
+                    () => const HomeScreen(),
+                    transition: Transition.fade,
+                    duration: const Duration(seconds: 1),
                   ),
                   icon: const Icon(Icons.home, color: AppColors.secondaryColor),
                 ),
@@ -72,10 +72,10 @@ class AllTasksScreen extends StatelessWidget {
                   ),
                   child: Center(
                     child: IconButton(
-                      onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const TaskScreen(),
-                        ),
+                      onPressed: () => Get.to(
+                        () => const TaskScreen(),
+                        transition: Transition.fade,
+                        duration: Duration(seconds: 1),
                       ),
                       icon:
                           const Icon(Icons.add, color: Colors.white, size: 20),
