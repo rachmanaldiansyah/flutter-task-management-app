@@ -1,16 +1,13 @@
-# flutter_task_management_app
+# Task Management App
 
-A new Flutter project.
+Task Management App adalah aplikasi manajemen tugas berbasis mobile yang dirancang untuk membantu pengguna mengatur pekerjaan mereka secara efisien. Aplikasi ini menawarkan fitur intuitif untuk membuat dan mengelola tugas.
 
-## Getting Started
+## Fitur Utama
 
-This project is a starting point for a Flutter application.
+- **Manajemen Tugas**: Tambah, ubah, atau hapus tugas dengan mudah.
 
-A few resources to get you started if this is your first Flutter project:
+## Teknologi yang Digunakan
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- **Bahasa Pemrograman**: Dart
+- **Database**: MySQL
+- **Framework/Library**: Flutter & GetX
