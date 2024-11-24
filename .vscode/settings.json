@@ -5,7 +5,6 @@
     "textMateRules": [
       {
         "scope": [
-          "comment",
           "storage.type.annotation.dart",
           "keyword.declaration.dart",
           "storage.type.primitive.dart",
@@ -16,7 +15,7 @@
           "variable.language.dart"
         ],
         "settings": {
-          "fontStyle": "italic bold"
+          "fontStyle": "bold"
         }
       },
     ],

@@ -1,32 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_task_management_app/screens/get_task_screen/get_task_controller.dart';
 import 'package:get/get.dart';
 
-import 'package:flutter_task_management_app/screens/home_screen.dart';
-import 'package:flutter_task_management_app/screens/task_screen.dart';
+import 'package:flutter_task_management_app/screens/home_screen/home_view.dart';
+import 'package:flutter_task_management_app/screens/task_screen/task_view.dart';
 import 'package:flutter_task_management_app/utils/colors/app_colors.dart';
 import 'package:flutter_task_management_app/widgets/button_widget.dart';
 import 'package:flutter_task_management_app/widgets/task_widget.dart';
 
-class AllTasksScreen extends StatelessWidget {
-  const AllTasksScreen({super.key});
+class GetTaskScreenView extends StatefulWidget {
+  const GetTaskScreenView({super.key});
+
+  @override
+  State<GetTaskScreenView> createState() => _GetTaskScreenViewState();
+}
+
+class _GetTaskScreenViewState extends State<GetTaskScreenView> {
+  GetTaskController getTaskCtr = Get.put(GetTaskController());
+
+  @override
+  void initState() {
+    super.initState();
+    getTaskCtr.getTasks();
+    getTaskCtr.totalData = getTaskCtr.listTasks?.data?.length ?? 0;
+  }
+
+  final leftEditIcon = Container(
+    margin: const EdgeInsets.only(bottom: 10),
+    color: const Color(0xFf2e3253).withOpacity(0.5),
+    alignment: Alignment.centerLeft,
+    child: const Icon(Icons.edit, color: Colors.white),
+  );
+
+  final rightDeleteIcon = Container(
+    margin: const EdgeInsets.only(bottom: 10),
+    color: Colors.redAccent,
+    alignment: Alignment.centerRight,
+    child: const Icon(Icons.delete, color: Colors.white),
+  );
 
   @override
   Widget build(BuildContext context) {
-    List myData = ["Try Harder", "Try Smarter"];
-
-    final leftEditIcon = Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      color: const Color(0xFf2e3253).withOpacity(0.5),
-      alignment: Alignment.centerLeft,
-      child: const Icon(Icons.edit, color: Colors.white),
-    );
-    final rightDeleteIcon = Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      color: Colors.redAccent,
-      alignment: Alignment.centerRight,
-      child: const Icon(Icons.delete, color: Colors.white),
-    );
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -56,7 +70,7 @@ class AllTasksScreen extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () => Get.to(
-                    () => const HomeScreen(),
+                    () => const HomeScreenView(),
                     transition: Transition.fade,
                     duration: const Duration(seconds: 1),
                   ),
@@ -73,7 +87,7 @@ class AllTasksScreen extends StatelessWidget {
                   child: Center(
                     child: IconButton(
                       onPressed: () => Get.to(
-                        () => const TaskScreen(),
+                        () => const TaskScreenView(),
                         transition: Transition.fade,
                         duration: Duration(seconds: 1),
                       ),
@@ -90,8 +104,8 @@ class AllTasksScreen extends StatelessWidget {
                   color: AppColors.secondaryColor,
                 ),
                 const SizedBox(width: 10),
-                const Text(
-                  "2",
+                Text(
+                  "${getTaskCtr.listTasks?.data?.length ?? 0}",
                   style: TextStyle(
                     fontSize: 20,
                     color: AppColors.secondaryColor,
@@ -100,35 +114,48 @@ class AllTasksScreen extends StatelessWidget {
               ],
             ),
           ),
-          Flexible(
-            child: ListView.builder(
-                itemCount: myData.length,
-                itemBuilder: (context, index) {
-                  return Dismissible(
-                    background: leftEditIcon,
-                    secondaryBackground: rightDeleteIcon,
-                    // onDismissed: (DismissDirection direction) async => true,
-                    confirmDismiss: (DismissDirection direction) async {
-                      return direction == DismissDirection.startToEnd
-                          ? Future.delayed(Duration.zero, () {
-                              editModalWidget(context);
-                              return false;
-                            })
-                          : Future.delayed(const Duration(seconds: 1),
-                              () => direction == DismissDirection.endToStart);
-                    },
-                    key: ObjectKey(index),
-                    child: Container(
-                      margin: const EdgeInsets.only(
-                          right: 20, left: 20, bottom: 10),
-                      child: TaskWidget(
-                        text: myData[index],
-                        color: Colors.blueGrey,
-                      ),
-                    ),
-                  );
-                }),
-          ),
+          Obx(
+            () => Flexible(
+              child: getTaskCtr.isLoading.value
+                  ? Center(child: CircularProgressIndicator())
+                  : getTaskCtr.totalData! > 0
+                      ? Text("Data Kosong")
+                      : ListView.builder(
+                          itemCount: getTaskCtr.listTasks?.data?.length ?? 0,
+                          itemBuilder: (context, index) {
+                            return Dismissible(
+                              background: leftEditIcon,
+                              secondaryBackground: rightDeleteIcon,
+                              // onDismissed: (DismissDirection direction) async => true,
+                              confirmDismiss:
+                                  (DismissDirection direction) async {
+                                return direction == DismissDirection.startToEnd
+                                    ? Future.delayed(Duration.zero, () {
+                                        editModalWidget(context);
+                                        return false;
+                                      })
+                                    : Future.delayed(
+                                        const Duration(seconds: 1),
+                                        () =>
+                                            direction ==
+                                            DismissDirection.endToStart,
+                                      );
+                              },
+                              key: ObjectKey(index),
+                              child: Container(
+                                margin: const EdgeInsets.only(
+                                    right: 20, left: 20, bottom: 10),
+                                child: TaskWidget(
+                                  text: getTaskCtr
+                                          .listTasks?.data?[index].title ??
+                                      "-",
+                                  color: Colors.blueGrey,
+                                ),
+                              ),
+                            );
+                          }),
+            ),
+          )
         ],
       ),
     );

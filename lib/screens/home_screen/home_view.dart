@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:flutter_task_management_app/screens/all_task_screen.dart';
-import 'package:flutter_task_management_app/screens/task_screen.dart';
+import 'package:flutter_task_management_app/screens/get_task_screen/get_task_view.dart';
+import 'package:flutter_task_management_app/screens/task_screen/task_view.dart';
 import 'package:flutter_task_management_app/utils/colors/app_colors.dart';
 import 'package:flutter_task_management_app/utils/utils.dart';
 import 'package:flutter_task_management_app/widgets/button_widget.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class HomeScreenView extends StatefulWidget {
+  const HomeScreenView({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeScreenView> createState() => _HomeScreenViewState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenViewState extends State<HomeScreenView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
               textColor: Colors.white,
               backgroundColor: AppColors.mainColor,
               onTap: () => Get.to(
-                () => const TaskScreen(),
+                () => const TaskScreenView(),
                 transition: Transition.fade,
                 duration: const Duration(seconds: 1),
               ),
@@ -61,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
               textColor: AppColors.mainColor,
               backgroundColor: Colors.white,
               onTap: () => Get.to(
-                () => const AllTasksScreen(),
+                () => GetTaskScreenView(),
                 transition: Transition.fade,
                 duration: const Duration(seconds: 1),
               ),

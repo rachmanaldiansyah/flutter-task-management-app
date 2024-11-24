@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_task_management_app/screens/task_screen/task_controller.dart';
 import 'package:get/get.dart';
 
 import 'package:flutter_task_management_app/utils/colors/app_colors.dart';
 import 'package:flutter_task_management_app/widgets/button_widget.dart';
 import 'package:flutter_task_management_app/widgets/textfield_widget.dart';
 
-class TaskScreen extends StatelessWidget {
-  const TaskScreen({super.key});
+class TaskScreenView extends StatefulWidget {
+  const TaskScreenView({super.key});
+
+  @override
+  State<TaskScreenView> createState() => _TaskScreenViewState();
+}
+
+class _TaskScreenViewState extends State<TaskScreenView> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController detailController = TextEditingController();
+  TaskController taskCtr = Get.put(TaskController());
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController nameController = TextEditingController();
-    TextEditingController detailController = TextEditingController();
-
     return Scaffold(
       body: Container(
         width: double.maxFinite,
@@ -60,7 +67,10 @@ class TaskScreen extends StatelessWidget {
                   backgroundColor: AppColors.mainColor,
                   text: "Add Task",
                   textColor: Colors.white,
-                  onTap: () {},
+                  onTap: () => taskCtr.createTasks(
+                    title: nameController.text,
+                    description: nameController.text,
+                  ),
                 ),
               ],
             ),
