@@ -5,9 +5,9 @@ import 'package:flutter_task_management_app/utils/utils.dart';
 import 'package:get/get.dart';
 
 class GetTaskController extends GetxController {
-  int? totalData;
+  RxInt totalData = 0.obs;
   RxBool isLoading = false.obs;
-  TasksView? listTasks;
+  TasksView? taskList;
 
   Future<void> getTasks() async {
     try {
@@ -17,7 +17,7 @@ class GetTaskController extends GetxController {
                 () => isLoading.value = false,
               ));
 
-      listTasks = TasksView(
+      taskList = TasksView(
         status: dtoGetTasks.status,
         message: dtoGetTasks.message,
         data: dtoGetTasks.data
@@ -30,6 +30,8 @@ class GetTaskController extends GetxController {
                 ))
             .toList(),
       );
+
+      if (taskList != null) totalData.value = taskList?.data?.length ?? 0;
     } catch (e) {
       getMsgNotification("Error", "Error occurred: $e");
     }

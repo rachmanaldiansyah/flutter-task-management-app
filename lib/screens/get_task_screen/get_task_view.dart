@@ -21,8 +21,7 @@ class _GetTaskScreenViewState extends State<GetTaskScreenView> {
   @override
   void initState() {
     super.initState();
-    getTaskCtr.getTasks();
-    getTaskCtr.totalData = getTaskCtr.listTasks?.data?.length ?? 0;
+    Future.delayed(Duration.zero, () => getTaskCtr.getTasks());
   }
 
   final leftEditIcon = Container(
@@ -43,85 +42,86 @@ class _GetTaskScreenViewState extends State<GetTaskScreenView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.only(left: 20, top: 60),
-            alignment: Alignment.topLeft,
-            width: double.maxFinite,
-            height: MediaQuery.of(context).size.height / 3.2,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage("assets/header1.jpg"),
-              ),
-            ),
-            child: IconButton(
-              onPressed: () => Get.back(),
-              icon: const Icon(
-                Icons.arrow_back,
-                color: AppColors.secondaryColor,
-              ),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.only(left: 20, right: 20),
-            child: Row(
-              children: [
-                IconButton(
-                  onPressed: () => Get.to(
-                    () => const HomeScreenView(),
-                    transition: Transition.fade,
-                    duration: const Duration(seconds: 1),
-                  ),
-                  icon: const Icon(Icons.home, color: AppColors.secondaryColor),
+      body: Obx(() {
+        return Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.only(left: 20, top: 60),
+              alignment: Alignment.topLeft,
+              width: double.maxFinite,
+              height: MediaQuery.of(context).size.height / 3.2,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage("assets/header1.jpg"),
                 ),
-                const SizedBox(width: 10),
-                Container(
-                  width: 25,
-                  height: 25,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12.5),
-                    color: Colors.black54,
-                  ),
-                  child: Center(
-                    child: IconButton(
-                      onPressed: () => Get.to(
-                        () => const TaskScreenView(),
-                        transition: Transition.fade,
-                        duration: Duration(seconds: 1),
-                      ),
-                      icon:
-                          const Icon(Icons.add, color: Colors.white, size: 20),
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(),
-                    ),
-                  ),
-                ),
-                Expanded(child: Container()),
-                const Icon(
-                  Icons.calendar_month_rounded,
+              ),
+              child: IconButton(
+                onPressed: () => Get.back(),
+                icon: const Icon(
+                  Icons.arrow_back,
                   color: AppColors.secondaryColor,
                 ),
-                const SizedBox(width: 10),
-                Text(
-                  "${getTaskCtr.listTasks?.data?.length ?? 0}",
-                  style: TextStyle(
-                    fontSize: 20,
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: Row(
+                children: [
+                  IconButton(
+                    onPressed: () => Get.to(
+                      () => const HomeScreenView(),
+                      transition: Transition.fade,
+                      duration: const Duration(seconds: 1),
+                    ),
+                    icon:
+                        const Icon(Icons.home, color: AppColors.secondaryColor),
+                  ),
+                  const SizedBox(width: 10),
+                  Container(
+                    width: 25,
+                    height: 25,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.5),
+                      color: Colors.black54,
+                    ),
+                    child: Center(
+                      child: IconButton(
+                        onPressed: () => Get.to(
+                          () => const TaskScreenView(id: 0),
+                          transition: Transition.fade,
+                          duration: Duration(seconds: 1),
+                        ),
+                        icon: const Icon(Icons.add,
+                            color: Colors.white, size: 20),
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                      ),
+                    ),
+                  ),
+                  Expanded(child: Container()),
+                  const Icon(
+                    Icons.calendar_month_rounded,
                     color: AppColors.secondaryColor,
                   ),
-                )
-              ],
+                  const SizedBox(width: 10),
+                  Text(
+                    "${getTaskCtr.totalData.value}",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: AppColors.secondaryColor,
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-          Obx(
-            () => Flexible(
+            Flexible(
               child: getTaskCtr.isLoading.value
                   ? Center(child: CircularProgressIndicator())
-                  : getTaskCtr.totalData! > 0
+                  : getTaskCtr.totalData.value == 0
                       ? Text("Data Kosong")
                       : ListView.builder(
-                          itemCount: getTaskCtr.listTasks?.data?.length ?? 0,
+                          itemCount: getTaskCtr.taskList?.data?.length ?? 0,
                           itemBuilder: (context, index) {
                             return Dismissible(
                               background: leftEditIcon,
@@ -131,7 +131,11 @@ class _GetTaskScreenViewState extends State<GetTaskScreenView> {
                                   (DismissDirection direction) async {
                                 return direction == DismissDirection.startToEnd
                                     ? Future.delayed(Duration.zero, () {
-                                        editModalWidget(context);
+                                        editModalWidget(
+                                          context,
+                                          taskId: getTaskCtr
+                                              .taskList?.data?[index].id,
+                                        );
                                         return false;
                                       })
                                     : Future.delayed(
@@ -146,22 +150,22 @@ class _GetTaskScreenViewState extends State<GetTaskScreenView> {
                                 margin: const EdgeInsets.only(
                                     right: 20, left: 20, bottom: 10),
                                 child: TaskWidget(
-                                  text: getTaskCtr
-                                          .listTasks?.data?[index].title ??
-                                      "-",
+                                  text:
+                                      getTaskCtr.taskList?.data?[index].title ??
+                                          "-",
                                   color: Colors.blueGrey,
                                 ),
                               ),
                             );
                           }),
             ),
-          )
-        ],
-      ),
+          ],
+        );
+      }),
     );
   }
 
-  Future<void> editModalWidget(BuildContext context) {
+  Future<void> editModalWidget(BuildContext context, {int? taskId}) {
     return showModalBottomSheet(
       barrierColor: Colors.transparent,
       backgroundColor: Colors.transparent,
@@ -185,14 +189,18 @@ class _GetTaskScreenViewState extends State<GetTaskScreenView> {
                   text: "View",
                   textColor: Colors.white,
                   backgroundColor: AppColors.mainColor,
-                  onTap: () {},
+                  onTap: () => Get.off(
+                    () => TaskScreenView(id: taskId ?? 0, isView: true),
+                  ),
                 ),
                 const SizedBox(height: 10),
                 ButtonWidget(
                   text: "Edit",
                   textColor: Colors.white,
                   backgroundColor: AppColors.mainColor,
-                  onTap: () {},
+                  onTap: () => Get.off(
+                    () => TaskScreenView(id: taskId ?? 0, isEdit: true),
+                  ),
                 )
               ],
             ),

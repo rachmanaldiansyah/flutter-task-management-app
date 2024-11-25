@@ -50,7 +50,7 @@ class _HomeScreenViewState extends State<HomeScreenView> {
               textColor: Colors.white,
               backgroundColor: AppColors.mainColor,
               onTap: () => Get.to(
-                () => const TaskScreenView(),
+                () => const TaskScreenView(id: 0),
                 transition: Transition.fade,
                 duration: const Duration(seconds: 1),
               ),
