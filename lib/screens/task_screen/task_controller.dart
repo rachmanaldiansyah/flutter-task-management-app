@@ -54,4 +54,20 @@ class TaskController extends GetxController {
 
     if (isLoading.value == false) Get.to(() => GetTaskScreenView());
   }
+
+  Future<void> updateTasks(int id, {String? title, String? description}) async {
+    DtoMsgTasks? dtoMsgTasks = await TaskService()
+        .updateTasks(id, title: title, description: description)
+        .whenComplete(() => Future.delayed(
+              Duration(seconds: 3),
+              () => isLoading.value = false,
+            ));
+
+    taskMsgView = TaskMsgView(
+      status: dtoMsgTasks.status,
+      message: dtoMsgTasks.message,
+    );
+
+    if (isLoading.value == false) Get.to(() => GetTaskScreenView());
+  }
 }

@@ -11,6 +11,33 @@ import 'package:http/http.dart' as http;
 class TaskService extends GetConnect {
   TaskController taskCtr = Get.put(TaskController());
 
+  Future<DtoTaskDetail> getTaskDetail(int id) async {
+    try {
+      final uri = Uri.parse("${AppConfig.getTaskById}/${id}");
+      final response = await http.get(uri, headers: HttpEx.headers);
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+
+        return DtoTaskDetail.fromJson(data);
+      } else {
+        getMsgNotification(
+          "Error",
+          "Error: ${response.statusCode} - ${response.body}",
+        );
+
+        log("Error: ${response.statusCode} - ${response.body}");
+        return DtoTaskDetail.fromJson({});
+      }
+    } catch (e) {
+      // Menangani error lain seperti koneksi
+      getMsgNotification("Error", "Exception occurred: $e");
+
+      log("Exception occurred: $e");
+      return DtoTaskDetail.fromJson({});
+    }
+  }
+
   Future<DtoMsgTasks> createTasks({String? title, String? description}) async {
     try {
       taskCtr.isLoading.value = true;
@@ -48,15 +75,26 @@ class TaskService extends GetConnect {
     }
   }
 
-  Future<DtoTaskDetail> getTaskDetail(int id) async {
+  Future<DtoMsgTasks> updateTasks(int id,
+      {String? title, String? description}) async {
     try {
-      final uri = Uri.parse("${AppConfig.getTaskById}/${id}");
-      final response = await http.get(uri, headers: HttpEx.headers);
+      taskCtr.isLoading.value = true;
 
-      if (response.statusCode == 200) {
+      final uri = Uri.parse("${AppConfig.updateTask}/${id}");
+      final response = await http.post(
+        uri,
+        body: json.encode({
+          "title": "${title ?? ""}",
+          "description": "${description ?? ""}",
+        }),
+      );
+
+      if (response.statusCode >= 200) {
         final data = json.decode(response.body);
+        DtoMsgTasks dtoMsgTasks = DtoMsgTasks.fromJson(data);
 
-        return DtoTaskDetail.fromJson(data);
+        getMsgNotification("Success", "${dtoMsgTasks.message}");
+        return DtoMsgTasks.fromJson(data);
       } else {
         getMsgNotification(
           "Error",
@@ -64,14 +102,14 @@ class TaskService extends GetConnect {
         );
 
         log("Error: ${response.statusCode} - ${response.body}");
-        return DtoTaskDetail.fromJson({});
+        return DtoMsgTasks.fromJson({});
       }
     } catch (e) {
       // Menangani error lain seperti koneksi
       getMsgNotification("Error", "Exception occurred: $e");
 
       log("Exception occurred: $e");
-      return DtoTaskDetail.fromJson({});
+      return DtoMsgTasks.fromJson({});
     }
   }
 }

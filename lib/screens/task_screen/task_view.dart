@@ -30,7 +30,7 @@ class _TaskScreenViewState extends State<TaskScreenView> {
   @override
   void initState() {
     super.initState();
-    if (widget.isView == true) {
+    if (widget.isView == true || widget.isEdit == true) {
       Future.delayed(Duration.zero, () => taskCtr.getTaskDetail(widget.id));
     }
   }
@@ -86,14 +86,18 @@ class _TaskScreenViewState extends State<TaskScreenView> {
                     backgroundColor: AppColors.mainColor,
                     text: widget.isView == true
                         ? "Back"
-                        : widget.isView == true && widget.isEdit == true
+                        : widget.isEdit == true
                             ? "Update"
                             : "Save",
                     textColor: Colors.white,
                     onTap: widget.isView == true
                         ? () => Get.back()
-                        : widget.isView == true && widget.isEdit == true
-                            ? () {}
+                        : widget.isEdit == true
+                            ? () => taskCtr.updateTasks(
+                                  widget.id,
+                                  title: nameController.text,
+                                  description: detailController.text,
+                                )
                             : () => taskCtr.createTasks(
                                   title: nameController.text,
                                   description: detailController.text,
