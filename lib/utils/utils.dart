@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 import 'colors/app_colors.dart';
 
-final String baseUrl = "http://192.168.1.3:8080";
+final String baseUrl = "http://192.168.1.8:8080";
 
 class AppConfig {
   static String getTasks = "$baseUrl/api/v1/tasks";

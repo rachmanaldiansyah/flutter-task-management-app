@@ -70,4 +70,13 @@ class TaskController extends GetxController {
 
     if (isLoading.value == false) Get.to(() => GetTaskScreenView());
   }
+
+  Future<void> deleteTasks(int id) async {
+    DtoMsgTasks? dtoMsgTasks = await TaskService().deleteTasks(id);
+
+    taskMsgView = TaskMsgView(
+      status: dtoMsgTasks.status,
+      message: dtoMsgTasks.message,
+    );
+  }
 }

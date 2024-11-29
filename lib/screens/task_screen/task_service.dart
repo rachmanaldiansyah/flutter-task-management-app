@@ -112,4 +112,35 @@ class TaskService extends GetConnect {
       return DtoMsgTasks.fromJson({});
     }
   }
+
+  Future<DtoMsgTasks> deleteTasks(int id) async {
+    try {
+      taskCtr.isLoading.value = true;
+
+      final uri = Uri.parse("${AppConfig.deleteTask}/${id}");
+      final response = await http.delete(uri, headers: HttpEx.headers);
+
+      if (response.statusCode >= 200) {
+        final data = json.decode(response.body);
+        DtoMsgTasks dtoMsgTasks = DtoMsgTasks.fromJson(data);
+
+        getMsgNotification("Success", "${dtoMsgTasks.message}");
+        return DtoMsgTasks.fromJson(data);
+      } else {
+        getMsgNotification(
+          "Error",
+          "Error: ${response.statusCode} - ${response.body}",
+        );
+
+        log("Error: ${response.statusCode} - ${response.body}");
+        return DtoMsgTasks.fromJson({});
+      }
+    } catch (e) {
+      // Menangani error lain seperti koneksi
+      getMsgNotification("Error", "Exception occurred: $e");
+
+      log("Exception occurred: $e");
+      return DtoMsgTasks.fromJson({});
+    }
+  }
 }

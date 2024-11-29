@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_task_management_app/screens/get_task_screen/get_task_controller.dart';
+import 'package:flutter_task_management_app/screens/task_screen/task_controller.dart';
 import 'package:get/get.dart';
 
 import 'package:flutter_task_management_app/screens/home_screen/home_view.dart';
@@ -16,7 +17,8 @@ class GetTaskScreenView extends StatefulWidget {
 }
 
 class _GetTaskScreenViewState extends State<GetTaskScreenView> {
-  GetTaskController getTaskCtr = Get.put(GetTaskController());
+  final GetTaskController getTaskCtr = Get.put(GetTaskController());
+  final TaskController taskCtr = Get.put(TaskController());
 
   @override
   void initState() {
@@ -129,20 +131,26 @@ class _GetTaskScreenViewState extends State<GetTaskScreenView> {
                               // onDismissed: (DismissDirection direction) async => true,
                               confirmDismiss:
                                   (DismissDirection direction) async {
+                                var taskId =
+                                    getTaskCtr.taskList?.data?[index].id ?? 0;
+
                                 return direction == DismissDirection.startToEnd
                                     ? Future.delayed(Duration.zero, () {
                                         editModalWidget(
                                           context,
-                                          taskId: getTaskCtr
-                                              .taskList?.data?[index].id,
+                                          taskId: taskId,
                                         );
                                         return false;
                                       })
                                     : Future.delayed(
                                         const Duration(seconds: 1),
-                                        () =>
-                                            direction ==
-                                            DismissDirection.endToStart,
+                                        () {
+                                          direction ==
+                                              DismissDirection.endToStart;
+
+                                          taskCtr.deleteTasks(taskId);
+                                          return;
+                                        },
                                       );
                               },
                               key: ObjectKey(index),
