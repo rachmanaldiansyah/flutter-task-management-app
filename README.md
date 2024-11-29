@@ -8,6 +8,6 @@ Task Management App adalah aplikasi manajemen tugas berbasis mobile yang diranca
 
 ## Teknologi yang Digunakan
 
-- **Bahasa Pemrograman**: Dart
-- **Database**: MySQL
-- **Framework/Library**: Flutter & GetX
+- **Bahasa Pemrograman**: Dart (ver3.2.6)
+- **Database**: PostgresSQL
+- **Framework/Library**: Flutter (ver3.16.9) & GetX (4.6.5)
